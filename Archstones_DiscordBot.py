@@ -278,6 +278,32 @@ async def Archstones_OnlineUsersCR(ctx):
         await ctx.send(embed=embedVar, delete_after=20)
         await ctx.message.delete()
 
+@bot.command(name='worldtendency', help='Shows rpcs3 Online Users')
+async def Archstones_OnlineUsersCR(ctx):
+    if ctx.guild.name != GUILD:
+        return
+    if ctx.guild.name == GUILD:
+        save_path_ps3 = ""
+        save_path_rpcs3 = ""
+        file = wget.download('', save_path_ps3)
+        if os.path.exists(save_path_ps3):
+            shutil.move(file,save_path_ps3)
+
+        file2 = wget.download('', save_path_rpcs3)
+        if os.path.exists(save_path_rpcs3):
+            shutil.move(file2,save_path_rpcs3)
+        
+        embedVar = discord.Embed(title="The Archstones - Current Global World Tendency", description="", color=0x6928D4)
+
+        with open(save_path_ps3) as f:
+            lines = f.readlines()
+            embedVar.add_field(name="PS3", value=lines[0], inline=False)
+        with open(save_path_rpcs3) as f:
+            lines = f.readlines()
+            embedVar.add_field(name="RPCS3", value=lines[0], inline=False)
+
+        await ctx.send(embed=embedVar, delete_after=20)
+        await ctx.message.delete()
 
 
 
