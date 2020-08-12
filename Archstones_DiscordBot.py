@@ -310,9 +310,7 @@ async def Archstones_slq(ctx):
     if ctx.guild.name != GUILD:
         return
     if ctx.guild.name == GUILD:
-        embedVar = discord.Embed(title="SL1 Guidelines", url="https://bigsoundlogan.github.io/Demon-s-Souls-SL1-Repository/", description="A comprehensive and community-supported repository on how the Demon's Souls Discord server manages SL1 runs and their numerous challenge variations. Maintained by Sen#1775")
-        embedVar.add_field(name="Banned Criteria", value="**Every boss must be killed**. A boss can be defined by the sight of a health bar and/or a fog gate (regardless of the need to enter through such). The bosses are: Vanguard*, Phalanx, Tower Knight, Penetrator, False King Allant, Armor Spider, Flamelurker, Dragon God, Fool’s Idol, Maneaters, Old Monk, Adjudicator, Old Hero, Storm King, Leechmonger, Dirty Colossus, Maiden Astraea, True King Allant. \n \n Any kind of help via summoning players or NPCs is not acceptable. \n \n Unless required by the specifications of a run, it is not allowed to obtain items before it is usually possible. \n \n Cheating and cheesing during gameplay is strictly not allowed. Turning on iframes, kills outside the bosses’ arenas, messing with the stats, breaking the AI so it kills any challenge…", inline=False)
-        embedVar.set_footer(text="Vist https://bigsoundlogan.github.io/Demon-s-Souls-SL1-Repository/ for full details", icon_url = ctx.author.avatar_url)
+        embedVar = discord.Embed(title="SL1 Guidelines", url="https://bigsoundlogan.github.io/Demon-s-Souls-SL1-Repository/", description="A comprehensive and community-supported repository on how the Demon's Souls Discord server manages SL1 runs and their numerous challenge variations. Maintained by Sen#1775 \n \n https://bigsoundlogan.github.io/Demon-s-Souls-SL1-Repository/")
         await ctx.send(embed=embedVar, delete_after=20)
         await ctx.message.delete()
 
