@@ -278,8 +278,8 @@ async def Archstones_OnlineUsersCR(ctx):
         await ctx.send(embed=embedVar, delete_after=20)
         await ctx.message.delete()
 
-@bot.command(name='worldtendency', help='Shows rpcs3 Online Users')
-async def Archstones_OnlineUsersCR(ctx):
+@bot.command(name='worldtendency', help='Shows World Tendency')
+async def Archstones_worldtendency(ctx):
     if ctx.guild.name != GUILD:
         return
     if ctx.guild.name == GUILD:
@@ -305,8 +305,29 @@ async def Archstones_OnlineUsersCR(ctx):
         await ctx.send(embed=embedVar, delete_after=20)
         await ctx.message.delete()
 
+@bot.command(name='sl1', help='Answer Question Relating to SL1 run')
+async def Archstones_slq(ctx):
+    if ctx.guild.name != GUILD:
+        return
+    if ctx.guild.name == GUILD:
+        embedVar = discord.Embed(title="SL1 Guidelines", url="https://bigsoundlogan.github.io/Demon-s-Souls-SL1-Repository/", description="A comprehensive and community-supported repository on how the Demon's Souls Discord server manages SL1 runs and their numerous challenge variations. Maintained by Sen#1775")
+        embedVar.add_field(name="Banned Criteria", value="**Every boss must be killed**. A boss can be defined by the sight of a health bar and/or a fog gate (regardless of the need to enter through such). The bosses are: Vanguard*, Phalanx, Tower Knight, Penetrator, False King Allant, Armor Spider, Flamelurker, Dragon God, Fool’s Idol, Maneaters, Old Monk, Adjudicator, Old Hero, Storm King, Leechmonger, Dirty Colossus, Maiden Astraea, True King Allant. \n \n Any kind of help via summoning players or NPCs is not acceptable. \n \n Unless required by the specifications of a run, it is not allowed to obtain items before it is usually possible. \n \n Cheating and cheesing during gameplay is strictly not allowed. Turning on iframes, kills outside the bosses’ arenas, messing with the stats, breaking the AI so it kills any challenge…", inline=False)
+        embedVar.set_footer(text="Vist https://bigsoundlogan.github.io/Demon-s-Souls-SL1-Repository/ for full details", icon_url = ctx.author.avatar_url)
+        await ctx.send(embed=embedVar, delete_after=20)
+        await ctx.message.delete()
 
-
+@bot.command(name='troubleshoot', help='Answer Question for troubleshooting')
+async def Archstones_slq(ctx):
+    if ctx.guild.name != GUILD:
+        return
+    if ctx.guild.name == GUILD:
+        embedVar=discord.Embed(title="Troubleshoot Connection", url="https://discord.com/channels/245489122892840961/564301616283385856", description="Will help give you an idea about why you might not be able to connect to The Archstones. Use the message you get when attempting to connect to find a potential solution below.", color=0x29c758)
+        embedVar.set_author(name="The Archstones", url="https://Thearchstones.com")
+        embedVar.add_field(name="Cannot connect to the Demon's Souls server", value="**PS3** \n 1. Please verify you have the set your **Primary DNS to 142.93.245.186** \n 2. Try creating a hotspot with your phone and connect your PS3 to that, ensure you still set the Primary DNS as stated above. Sometimes the issues can be your ISP that is blocking custom DNS servers. \n **RPCS3** \n 1. Ensure you have set your IP/Host Switch, Created your RPCN account, and Set your token in the configuration. \n If you still continue to have issue, feel free to reach out, we will try to assist where possible. ", inline=False)
+        embedVar.add_field(name="The Demon's Souls Online Service has been terminated", value="Normally this represents two things, Either you have not set your DNS properly for PS3, IP/Host Switch for RPCS3, or somewhere between your connection and the internet your network is not receiving the right domain name to connect. Please ensure you have set your DNS / IP/Host Switch, If you have issues still please contact the mod team we have a solution for you.", inline=True)
+        embedVar.set_footer(text="visit #private-server for more detailed information", icon_url = ctx.author.avatar_url)
+        await ctx.send(embed=embedVar, delete_after=20)
+        await ctx.message.delete()
 
 #---- Admin User Commands
 @bot.command(name='editrr', help='Edit Current Role Reaction Message | Example Use !editrr channelID messageID "INSERT TITLE HERE" "INTERE CONTENT HERE" HexColorValue')
