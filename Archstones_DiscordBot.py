@@ -162,7 +162,7 @@ async def Archstones_privateserver(ctx):
         embedVar = discord.Embed(title="The Archstones Private Server", description="The Archstones was established back in Feb 2018. Currently the most active server for Demon's Souls on PS3 & RPCS3. Please visit https://thearchstones.com for more information.", color=0x6928D4)
         embedVar.add_field(name="Getting Started", value="Visit #northern-outskirts and set your role thats applicable to your version of Demon's Souls.", inline=False)
         embedVar.add_field(name="How to Connect", value="Please visit the #private-server channel for information on how to connect.", inline=False)
-        await ctx.send(embed=embedVar, delete_after=20)
+        await ctx.send(embed=embedVar, delete_after=35)
         await ctx.message.delete()
         
 
@@ -174,7 +174,7 @@ async def Archstones_ps3(ctx):
         embedVar = discord.Embed(title="PS3 Setup", description="", color=0x6928D4)
         embedVar.add_field(name="Getting Started", value="Visit #northern-outskirts and set your role thats applicable to your version of Demon's Souls.", inline=False)
         embedVar.add_field(name="How to Connect", value="1.   Go to Network PS3 Settings > Internet Connection Settings. \n 2.    Here, press 'Custom' and 'Enter Manually'. \n 3.    Change your Primary DNS to 142.93.245.186", inline=False)
-        await ctx.send(embed=embedVar, delete_after=20)
+        await ctx.send(embed=embedVar, delete_after=35)
         await ctx.message.delete()
 
 @bot.command(name='patreon', help='')
@@ -183,7 +183,7 @@ async def Archstones_Patreon(ctx):
         return
     if ctx.guild.name == GUILD:
         embed=discord.Embed(title="The Archstones Patreon", url="https://www.patreon.com/TheArchstones", color=0xa600ff)
-        await ctx.send(embed=embed, delete_after=20)
+        await ctx.send(embed=embed, delete_after=35)
         await ctx.message.delete()
 
 @bot.command(name='online-na', help='Shows North America Online Users')
@@ -206,7 +206,7 @@ async def Archstones_OnlineUsersNA(ctx):
 
         embedVar.set_footer(text="Visit https://thearchstones.com/onlineusers for more information", icon_url = ctx.author.avatar_url)
 
-        await ctx.send(embed=embedVar, delete_after=20)
+        await ctx.send(embed=embedVar, delete_after=35)
         await ctx.message.delete()
 
 @bot.command(name='online-eu', help='Shows Europe Online Users')
@@ -229,7 +229,7 @@ async def Archstones_OnlineUsersEU(ctx):
 
         embedVar.set_footer(text="Visit https://thearchstones.com/onlineusers for more information", icon_url = ctx.author.avatar_url)
 
-        await ctx.send(embed=embedVar, delete_after=20)
+        await ctx.send(embed=embedVar, delete_after=35)
         await ctx.message.delete()
 
 @bot.command(name='online-as', help='Shows Asia Online Users')
@@ -252,7 +252,7 @@ async def Archstones_OnlineUsersAS(ctx):
 
         embedVar.set_footer(text="Visit https://thearchstones.com/onlineusers for more information", icon_url = ctx.author.avatar_url)
 
-        await ctx.send(embed=embedVar, delete_after=20)
+        await ctx.send(embed=embedVar, delete_after=35)
         await ctx.message.delete()
 
 @bot.command(name='online-rpcs3', help='Shows rpcs3 Online Users')
@@ -275,7 +275,7 @@ async def Archstones_OnlineUsersCR(ctx):
 
         embedVar.set_footer(text="Visit https://thearchstones.com/onlineusers for more information", icon_url = ctx.author.avatar_url)
 
-        await ctx.send(embed=embedVar, delete_after=20)
+        await ctx.send(embed=embedVar, delete_after=35)
         await ctx.message.delete()
 
 @bot.command(name='worldtendency', help='Shows World Tendency')
@@ -302,7 +302,7 @@ async def Archstones_worldtendency(ctx):
             lines = f.readlines()
             embedVar.add_field(name="RPCS3", value=lines[0], inline=False)
 
-        await ctx.send(embed=embedVar, delete_after=20)
+        await ctx.send(embed=embedVar, delete_after=35)
         await ctx.message.delete()
 
 @bot.command(name='sl1', help='Answer Question Relating to SL1 run')
@@ -311,7 +311,7 @@ async def Archstones_slq(ctx):
         return
     if ctx.guild.name == GUILD:
         embedVar = discord.Embed(title="SL1 Guidelines", url="https://bigsoundlogan.github.io/Demon-s-Souls-SL1-Repository/", description="A comprehensive and community-supported repository on how the Demon's Souls Discord server manages SL1 runs and their numerous challenge variations. Maintained by Sen#1775 \n \n https://bigsoundlogan.github.io/Demon-s-Souls-SL1-Repository/")
-        await ctx.send(embed=embedVar, delete_after=20)
+        await ctx.send(embed=embedVar, delete_after=35)
         await ctx.message.delete()
 
 @bot.command(name='troubleshoot', help='Answer Question for troubleshooting')
@@ -324,7 +324,7 @@ async def Archstones_slq(ctx):
         embedVar.add_field(name="Cannot connect to the Demon's Souls server", value="**PS3** \n 1. Please verify you have the set your **Primary DNS to 142.93.245.186** \n 2. Try creating a hotspot with your phone and connect your PS3 to that, ensure you still set the Primary DNS as stated above. Sometimes the issues can be your ISP that is blocking custom DNS servers. \n **RPCS3** \n 1. Ensure you have set your IP/Host Switch, Created your RPCN account, and Set your token in the configuration. \n If you still continue to have issue, feel free to reach out, we will try to assist where possible. ", inline=False)
         embedVar.add_field(name="The Demon's Souls Online Service has been terminated", value="Normally this represents two things, Either you have not set your DNS properly for PS3, IP/Host Switch for RPCS3, or somewhere between your connection and the internet your network is not receiving the right domain name to connect. Please ensure you have set your DNS / IP/Host Switch, If you have issues still please contact the mod team we have a solution for you.", inline=True)
         embedVar.set_footer(text="visit #private-server for more detailed information", icon_url = ctx.author.avatar_url)
-        await ctx.send(embed=embedVar, delete_after=20)
+        await ctx.send(embed=embedVar, delete_after=35)
         await ctx.message.delete()
 
 #---- Admin User Commands
@@ -375,7 +375,7 @@ async def Archstones_SET_RR(ctx, channelID, messageID):
         global Current_RR_Message_ID
         Current_RR_Message_ID = message_ID
         print("Set RR Message to ID %r" % Current_RR_Message_ID)
-        await ctx.send('Set Role Reaction Monitor Message to %r' % Current_RR_Message_ID, delete_after=20)
+        await ctx.send('Set Role Reaction Monitor Message to %r' % Current_RR_Message_ID, delete_after=35)
         await ctx.message.delete()
 
 @bot.command(name='isrrset', help="check if messageID to the RoleReaction Message to Monitor")
@@ -387,11 +387,11 @@ async def Archstones_IS_RR(ctx):
         global Current_RR_Message_ID
         if Current_RR_Message_ID == 0:
             print("RR Message is not set")
-            await ctx.send('RR Message is not set', delete_after=20)
+            await ctx.send('RR Message is not set', delete_after=35)
             await ctx.message.delete()
         else:
             print("RR Message is set to ID %r" % Current_RR_Message_ID)
-            await ctx.send('RR Message is set to ID %r' % Current_RR_Message_ID, delete_after=20)
+            await ctx.send('RR Message is set to ID %r' % Current_RR_Message_ID, delete_after=35)
             await ctx.message.delete()
 
 @bot.command(name='deleterr', help='Deletes Message | Example Use !deleterr channelID messageID')
@@ -421,7 +421,7 @@ async def Archstones_Block_User(ctx, user):
 
         if user.lower() in blacklist:
             print("User %s already in blacklist" % (user))
-            await ctx.send('User %s already in blacklist' % (user), delete_after=20)
+            await ctx.send('User %s already in blacklist' % (user), delete_after=35)
             await ctx.message.delete()
         else:
             with open("blockedusers.txt", "a+") as file_object:
@@ -432,7 +432,7 @@ async def Archstones_Block_User(ctx, user):
                 file_object.write(user.lower())
 
             print("User %s added to blacklist" % (user))
-            await ctx.send('User %s added to blacklist' % (user), delete_after=20)
+            await ctx.send('User %s added to blacklist' % (user), delete_after=35)
             await ctx.message.delete()
 
         fobj.close()
@@ -454,13 +454,13 @@ async def Archstones_Unblock_User(ctx, user):
                 f.truncate()
 
             print("Removed User %s from blacklist" % (user))
-            await ctx.send('Removed User %s from blacklist' % (user), delete_after=20)
+            await ctx.send('Removed User %s from blacklist' % (user), delete_after=35)
             await ctx.message.delete()
 
 
         else:
             print("Unable to find User %s in blacklist" % (user))
-            await ctx.send('Unable to find User %s in blacklist' % (user), delete_after=20)
+            await ctx.send('Unable to find User %s in blacklist' % (user), delete_after=35)
             await ctx.message.delete()
 
         fobj.close()
