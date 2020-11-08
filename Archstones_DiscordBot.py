@@ -1,6 +1,10 @@
-import os, discord, wget, shutil, time
+import os, wget, shutil, time
 from dotenv import load_dotenv
-from discord.ext import commands
+import discord
+from discord.ext import commands, tasks
+from discord.utils import get
+
+
 
 #Env Variables
 load_dotenv()
@@ -21,6 +25,9 @@ Role_NA_PVP_Emoji_Name = "napvp"
 Role_EU_PVP_Emoji_Name = "eupvp"
 Role_AS_PVP_Emoji_Name = "aspvp"
 Role_RPCS3_PVP_Emoji_Name = "rpcs3pvp"
+Role_RPCS3_Emoji_Name = "pfrpcs3"
+Role_PS3_Emoji_Name = "pfps3"
+Role_PS5_Emoji_Name = "pfps5"
 
 Roles_NA = "PS3 North America"
 Roles_EU = "PS3 Europe"
@@ -30,9 +37,13 @@ Roles_NA_PVP = "PS3 NA - PvP"
 Roles_EU_PVP = "PS3 EU - PvP"
 Roles_AS_PVP = "PS3 AS - PvP"
 Roles_RPCS3_PVP = "RPCS3 - PvP"
+Roles_RPCS3 = "RPCS3"
+Roles_PS3 = "PS3"
+Roles_PS5 = "PS5"
 
-
-bot = commands.Bot(command_prefix='!')
+intents = discord.Intents.default()
+intents.members = True
+bot = commands.Bot(command_prefix='!', intents=intents)
 bot.remove_command('help')
 
 @bot.event
@@ -44,23 +55,19 @@ async def on_ready():
         f'{guild.name}(id: {guild.id})\n'
     )
 
-    channel = bot.get_channel(493504461583417354)
-    await channel.send('-------- Bot Started, Please run "!setrr" to have role reactions work. --------', delete_after=120 )
+    #channel = bot.get_channel(493504461583417354)
+    #await channel.send('-------- Bot Started, Please run "!setrr" to have role reactions work. --------', delete_after=120 )
 
 
 #---- Events
-#@bot.event
-#async def on_member_join(member):
-#    await member.create_dm()
-#    await member.dm_channel.send(
-#        f'Hi {member.name}, welcome to The Archstones!'
-#    )
-#    print('Sent Welcome DM to %s' % (member.name))
-
 @bot.event
 async def on_raw_reaction_add(payload):
     guild = bot.get_guild(payload.guild_id)
-    member = guild.get_member(payload.user_id)
+    member = payload.member
+
+    if member is None:
+        print("Error Getting Member ID")
+        return
 
     if guild.name != GUILD:
         return
@@ -68,37 +75,16 @@ async def on_raw_reaction_add(payload):
     if payload.message_id != Current_RR_Message_ID:
         return
     
-    if payload.message_id == Current_RR_Message_ID and payload.emoji.name == Role_NA_Emoji_Name:
-        role = discord.utils.get(guild.roles, name=Roles_NA)
+    if payload.message_id == Current_RR_Message_ID and payload.emoji.name == Role_PS5_Emoji_Name:
+        role = discord.utils.get(guild.roles, name=Roles_PS5)
         print("Added %s to %s Role" % (member, role))
         await member.add_roles(role)
-    elif payload.message_id == Current_RR_Message_ID and payload.emoji.name == Role_EU_Emoji_Name:
-        role = discord.utils.get(guild.roles, name=Roles_EU)
-        print("Added %s to %s Role" % (member, role))
-        await member.add_roles(role)
-    elif payload.message_id == Current_RR_Message_ID and payload.emoji.name == Role_AS_Emoji_Name:
-        role = discord.utils.get(guild.roles, name=Roles_AS)
+    elif payload.message_id == Current_RR_Message_ID and payload.emoji.name == Role_PS3_Emoji_Name:
+        role = discord.utils.get(guild.roles, name=Roles_PS3)
         print("Added %s to %s Role" % (member, role))
         await member.add_roles(role)
     elif payload.message_id == Current_RR_Message_ID and payload.emoji.name == Role_RPCS3_Emoji_Name:
         role = discord.utils.get(guild.roles, name=Roles_RPCS3)
-        print("Added %s to %s Role" % (member, role))
-        await member.add_roles(role)
-
-    elif payload.message_id == Current_RR_Message_ID and payload.emoji.name == Role_NA_PVP_Emoji_Name:
-        role = discord.utils.get(guild.roles, name=Roles_NA_PVP)
-        print("Added %s to %s Role" % (member, role))
-        await member.add_roles(role)
-    elif payload.message_id == Current_RR_Message_ID and payload.emoji.name == Role_EU_PVP_Emoji_Name:
-        role = discord.utils.get(guild.roles, name=Roles_EU_PVP)
-        print("Added %s to %s Role" % (member, role))
-        await member.add_roles(role)
-    elif payload.message_id == Current_RR_Message_ID and payload.emoji.name == Role_AS_PVP_Emoji_Name:
-        role = discord.utils.get(guild.roles, name=Roles_AS_PVP)
-        print("Added %s to %s Role" % (member, role))
-        await member.add_roles(role)
-    elif payload.message_id == Current_RR_Message_ID and payload.emoji.name == Role_RPCS3_PVP_Emoji_Name:
-        role = discord.utils.get(guild.roles, name=Roles_RPCS3_PVP)
         print("Added %s to %s Role" % (member, role))
         await member.add_roles(role)
     else:
@@ -107,7 +93,11 @@ async def on_raw_reaction_add(payload):
 @bot.event
 async def on_raw_reaction_remove(payload):
     guild = bot.get_guild(payload.guild_id)
-    member = guild.get_member(payload.user_id)
+    member = get(guild.members, id=payload.user_id)
+
+    if member is None:
+        print("Error Getting Member ID")
+        return
 
     if guild.name != GUILD:
         return
@@ -115,37 +105,16 @@ async def on_raw_reaction_remove(payload):
     if payload.message_id != Current_RR_Message_ID:
         return
     
-    if payload.message_id == Current_RR_Message_ID and payload.emoji.name == Role_NA_Emoji_Name:
-        role = discord.utils.get(guild.roles, name=Roles_NA)
+    if payload.message_id == Current_RR_Message_ID and payload.emoji.name == Role_PS5_Emoji_Name:
+        role = discord.utils.get(guild.roles, name=Roles_PS5)
         print("Removed %s from %s Role" % (member, role))
         await member.remove_roles(role)
-    elif payload.message_id == Current_RR_Message_ID and payload.emoji.name == Role_EU_Emoji_Name:
-        role = discord.utils.get(guild.roles, name=Roles_EU)
-        print("Removed %s from %s Role" % (member, role))
-        await member.remove_roles(role)
-    elif payload.message_id == Current_RR_Message_ID and payload.emoji.name == Role_AS_Emoji_Name:
-        role = discord.utils.get(guild.roles, name=Roles_AS)
+    elif payload.message_id == Current_RR_Message_ID and payload.emoji.name == Role_PS3_Emoji_Name:
+        role = discord.utils.get(guild.roles, name=Roles_PS3)
         print("Removed %s from %s Role" % (member, role))
         await member.remove_roles(role)
     elif payload.message_id == Current_RR_Message_ID and payload.emoji.name == Role_RPCS3_Emoji_Name:
         role = discord.utils.get(guild.roles, name=Roles_RPCS3)
-        print("Removed %s from %s Role" % (member, role))
-        await member.remove_roles(role)
-
-    elif payload.message_id == Current_RR_Message_ID and payload.emoji.name == Role_NA_PVP_Emoji_Name:
-        role = discord.utils.get(guild.roles, name=Roles_NA_PVP)
-        print("Removed %s from %s Role" % (member, role))
-        await member.remove_roles(role)
-    elif payload.message_id == Current_RR_Message_ID and payload.emoji.name == Role_EU_PVP_Emoji_Name:
-        role = discord.utils.get(guild.roles, name=Roles_EU_PVP)
-        print("Removed %s from %s Role" % (member, role))
-        await member.remove_roles(role)
-    elif payload.message_id == Current_RR_Message_ID and payload.emoji.name == Role_AS_PVP_Emoji_Name:
-        role = discord.utils.get(guild.roles, name=Roles_AS_PVP)
-        print("Removed %s from %s Role" % (member, role))
-        await member.remove_roles(role)
-    elif payload.message_id == Current_RR_Message_ID and payload.emoji.name == Role_RPCS3_PVP_Emoji_Name:
-        role = discord.utils.get(guild.roles, name=Roles_RPCS3_PVP)
         print("Removed %s from %s Role" % (member, role))
         await member.remove_roles(role)
     else:
@@ -191,8 +160,8 @@ async def Archstones_OnlineUsersNA(ctx):
     if ctx.guild.name != GUILD:
         return
     if ctx.guild.name == GUILD:
-        save_path_na = ""
-        file = wget.download('', save_path_na)
+        save_path_na = "MapNA_Count.txt"
+        file = wget.download('https://thearchstones.com/MapNA_Count.txt', save_path_na)
         if os.path.exists(save_path_na):
             shutil.move(file,save_path_na)
         
@@ -214,8 +183,8 @@ async def Archstones_OnlineUsersEU(ctx):
     if ctx.guild.name != GUILD:
         return
     if ctx.guild.name == GUILD:
-        save_path_eu = ""
-        file = wget.download('', save_path_eu)
+        save_path_eu = "MapEU_Count.txt"
+        file = wget.download('https://thearchstones.com/MapEU_Count.txt', save_path_eu)
         if os.path.exists(save_path_eu):
             shutil.move(file,save_path_eu)
 
@@ -237,8 +206,8 @@ async def Archstones_OnlineUsersAS(ctx):
     if ctx.guild.name != GUILD:
         return
     if ctx.guild.name == GUILD:
-        save_path_jp = ""
-        file = wget.download('', save_path_jp)
+        save_path_jp = "MapJP_Count.txt"
+        file = wget.download('https://thearchstones.com/MapJP_Count.txt', save_path_jp)
         if os.path.exists(save_path_jp):
             shutil.move(file,save_path_jp)
         
@@ -260,8 +229,8 @@ async def Archstones_OnlineUsersCR(ctx):
     if ctx.guild.name != GUILD:
         return
     if ctx.guild.name == GUILD:
-        save_path_cr = ""
-        file = wget.download('', save_path_cr)
+        save_path_cr = "MapCR_Count.txt"
+        file = wget.download('https://rpcs3.thearchstones.com/MapCR_Count.txt', save_path_cr)
         if os.path.exists(save_path_cr):
             shutil.move(file,save_path_cr)
         
@@ -283,13 +252,13 @@ async def Archstones_worldtendency(ctx):
     if ctx.guild.name != GUILD:
         return
     if ctx.guild.name == GUILD:
-        save_path_ps3 = ""
-        save_path_rpcs3 = ""
-        file = wget.download('', save_path_ps3)
+        save_path_ps3 = "ps3GTValue.txt"
+        save_path_rpcs3 = "rpcs3GTValue.txt"
+        file = wget.download('https://thearchstones.com/GTValue.txt', save_path_ps3)
         if os.path.exists(save_path_ps3):
             shutil.move(file,save_path_ps3)
 
-        file2 = wget.download('', save_path_rpcs3)
+        file2 = wget.download('https://rpcs3.thearchstones.com/GTValue.txt', save_path_rpcs3)
         if os.path.exists(save_path_rpcs3):
             shutil.move(file2,save_path_rpcs3)
         
