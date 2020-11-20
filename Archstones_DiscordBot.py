@@ -28,6 +28,7 @@ Role_RPCS3_PVP_Emoji_Name = "rpcs3pvp"
 Role_RPCS3_Emoji_Name = "pfrpcs3"
 Role_PS3_Emoji_Name = "pfps3"
 Role_PS5_Emoji_Name = "pfps5"
+Role_Phantom_Emoji_Name = "phantom"
 
 Roles_NA = "PS3 North America"
 Roles_EU = "PS3 Europe"
@@ -40,6 +41,7 @@ Roles_RPCS3_PVP = "RPCS3 - PvP"
 Roles_RPCS3 = "RPCS3"
 Roles_PS3 = "PS3"
 Roles_PS5 = "PS5"
+Roles_Phantom = "Phantom"
 
 intents = discord.Intents.default()
 intents.members = True
@@ -87,6 +89,10 @@ async def on_raw_reaction_add(payload):
         role = discord.utils.get(guild.roles, name=Roles_RPCS3)
         print("Added %s to %s Role" % (member, role))
         await member.add_roles(role)
+    elif payload.message_id == Current_RR_Message_ID and payload.emoji.name == Role_Phantom_Emoji_Name:
+        role = discord.utils.get(guild.roles, name=Roles_Phantom)
+        print("Added %s to %s Role" % (member, role))
+        await member.add_roles(role)
     else:
         print("Failed to find reaction match for emoji %s" % (payload.emoji.name))
 
@@ -115,6 +121,10 @@ async def on_raw_reaction_remove(payload):
         await member.remove_roles(role)
     elif payload.message_id == Current_RR_Message_ID and payload.emoji.name == Role_RPCS3_Emoji_Name:
         role = discord.utils.get(guild.roles, name=Roles_RPCS3)
+        print("Removed %s from %s Role" % (member, role))
+        await member.remove_roles(role)
+    elif payload.message_id == Current_RR_Message_ID and payload.emoji.name == Role_Phantom_Emoji_Name:
+        role = discord.utils.get(guild.roles, name=Roles_Phantom)
         print("Removed %s from %s Role" % (member, role))
         await member.remove_roles(role)
     else:
