@@ -12,6 +12,7 @@ But feel free to modify how you see fit.
  - Commands for seeing online Archstones Users
  - Admin commands for RR
  - Built-in block users from using the bot
+ - Discord and Archstones Server Integration
 
 **Req:**
 

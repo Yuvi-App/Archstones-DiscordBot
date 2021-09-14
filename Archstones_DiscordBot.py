@@ -12,9 +12,12 @@ TOKEN = os.getenv('BOT_TOKEN')
 GUILD = os.getenv('ARCHSTONE_GUILD')
 
 #SQLite Stuff
-dbfilename = "AccountLink.sqlite"
-conn = sqlite3.connect(dbfilename)
+Accountdbfilename = "AccountLink.sqlite"
+PlayerDBfilename = "/root/Desktop/Archstones/db/players.sqlite"
+conn = sqlite3.connect(Accountdbfilename)
 c = conn.cursor()
+conn2 = sqlite3.connect(PlayerDBfilename)
+c2 = conn2.cursor()
 
 
 #Custom Defined
@@ -314,29 +317,82 @@ async def Archstones_slq(ctx):
 
 #---- Archstones/Discord Intergration User Commands
 @bot.command(name='linkaccount', help='Links PSN/RPCS3 Account to Discord Account')
-async def Archstones_privateserver(ctx, PSN_NAME):
+async def Archstones_privateserver(ctx, VERSION, PSN_NAME):
     if ctx.guild.name != GUILD:
+        await ctx.message.delete()
         return
     if ctx.guild.name == GUILD:
-        #-- Check if account exist
         timenow = datetime.datetime.now()
+        PSN_NAME += "0"
         DISCORD_NAME = ctx.message.author
 
-        row = conn.execute("select count(*) from linkedaccounts where DISCORD_NAME = ?", (str(DISCORD_NAME),)).fetchone()
-        print("Value = %s %s %s %s" % (row, DISCORD_NAME, PSN_NAME, timenow))
-        if row[0] == 0:
-            conn.execute("insert into linkedaccounts(DISCORD_NAME, PSN_NAME, DATE_TIME) VALUES (?,?,?)", (str(DISCORD_NAME),str(PSN_NAME),str(timenow)))
-            conn.commit()
-            print("Linked Account %s to %s" % (DISCORD_NAME,PSN_NAME))
+        #Ensure RPCS3 or PS3 is Entered
+        if VERSION == "RPCS3" or VERSION == "PS3":
+            #Check if account exist
+            row = conn.execute("select count(*) from linkedaccounts where DISCORD_NAME = ?", (str(DISCORD_NAME),)).fetchone()
+            print("Value = %s %s %s %s" % (row, DISCORD_NAME, PSN_NAME, timenow))
+       
+            if row[0] == 0:
+                #Account not Found, Link Accounts in DB
+                conn.execute("insert into linkedaccounts(DISCORD_NAME, PSN_NAME, VERSION, DATE_TIME) VALUES (?,?,?,?)", (str(DISCORD_NAME),str(PSN_NAME),str(VERSION),str(timenow)))
+                conn.commit()
+                print("Linked Account %s to %s for %s" % (DISCORD_NAME,PSN_NAME,VERSION))
 
 
-            await ctx.send('Linked Account Success!', delete_after=30)
-            await ctx.message.delete()
+                await ctx.send('Linked Account Success!', delete_after=30)
+                await ctx.message.delete()
 
-        elif row[0] >= 1:
-            await ctx.send('Account Already Linked!', delete_after=30)
+            elif row[0] >= 1:
+                #Acccount Found, Leave Function since its linked
+                await ctx.send('Account Already Linked!', delete_after=30)
+                await ctx.message.delete()
+                return
+        else:
+            #Incorrect Version entered
+            await ctx.send('Please enter RPCS3 or PS3!', delete_after=30)
             await ctx.message.delete()
             return
+
+@bot.command(name='changewt', help='Changes World Tendency for your PSN Account')
+async def Archstones_privateserver(ctx, desired_tendency):
+    if ctx.guild.name != GUILD:
+        await ctx.message.delete()
+        return
+    if ctx.guild.name == GUILD:
+        DISCORD_NAME = ctx.message.author
+
+        #Sanitize Input for INT Value
+        try:
+            desired_tendency = int(desired_tendency)
+            if -200 <= desired_tendency <= 200:
+                #Check if Account Exist
+                row = conn.execute("select PSN_NAME from linkedaccounts where DISCORD_NAME = ?", (str(DISCORD_NAME),)).fetchone()[0]
+                if row is None:
+                    print("WT Command - %s account not linked" % (DISCORD_NAME))
+                    await ctx.send('Account Not Link!', delete_after=30)
+                    await ctx.send('Please link using "!linkaccount PSN-NAME" before setting World Tendency', delete_after=30)
+                    await ctx.message.delete()
+                    return
+                elif row is not None:
+                    PSN_NAME = row
+                    conn2.execute("update players set desired_tendency = ? where characterID = ?", (desired_tendency, str(PSN_NAME),))
+                    conn2.commit()
+                    print("WT Command - %s Discord Account, %s PSN Account, changed WT to %s" % (DISCORD_NAME,PSN_NAME,str(desired_tendency)))
+                    await ctx.send('SUCCESS: Changed World Tendency to %s!' % str(desired_tendency), delete_after=30)
+                    await ctx.message.delete()
+                else:
+                    await ctx.message.delete()
+                    return
+            else:
+                print("WT Command - %s User, Wrong Input Value %s" % (DISCORD_NAME,str(desired_tendency)))
+                await ctx.send('ERROR: Enter a Value between -200 & 200!', delete_after=30)
+                await ctx.message.delete()
+        except:
+            print("WT Command - %s User, Failed to Sanitize Value %s" % (DISCORD_NAME,str(desired_tendency)))
+            await ctx.send('ERROR: Please link your Account first', delete_after=30)
+            await ctx.message.delete()
+            return
+
 
 #---- Admin User Commands
 @bot.command(name='editrr', help='Edit Current Role Reaction Message | Example Use !editrr channelID messageID "INSERT TITLE HERE" "INTERE CONTENT HERE" HexColorValue')
@@ -486,10 +542,6 @@ async def on_error(event, *args, **kwargs):
             f.write(f'Unhandled message: {args[0]}\n')
         else:
             raise
-
-
-
-
 
 
 bot.run(TOKEN)
