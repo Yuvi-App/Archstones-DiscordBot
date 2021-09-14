@@ -1,4 +1,4 @@
-import os, wget, shutil, time
+import os, wget, shutil, time, sqlite3, datetime
 from dotenv import load_dotenv
 import discord
 from discord.ext import commands, tasks
@@ -10,6 +10,11 @@ from discord.utils import get
 load_dotenv()
 TOKEN = os.getenv('BOT_TOKEN')
 GUILD = os.getenv('ARCHSTONE_GUILD')
+
+#SQLite Stuff
+dbfilename = "AccountLink.sqlite"
+conn = sqlite3.connect(dbfilename)
+c = conn.cursor()
 
 
 #Custom Defined
@@ -143,7 +148,6 @@ async def Archstones_privateserver(ctx):
         embedVar.add_field(name="How to Connect", value="Please visit the #private-server channel for information on how to connect.", inline=False)
         await ctx.send(embed=embedVar, delete_after=35)
         await ctx.message.delete()
-        
 
 @bot.command(name='ps3', help='Answer Question Relating to PS3')
 async def Archstones_ps3(ctx):
@@ -306,6 +310,33 @@ async def Archstones_slq(ctx):
         embedVar.set_footer(text="visit #private-server for more detailed information", icon_url = ctx.author.avatar_url)
         await ctx.send(embed=embedVar, delete_after=35)
         await ctx.message.delete()
+
+
+#---- Archstones/Discord Intergration User Commands
+@bot.command(name='linkaccount', help='Links PSN/RPCS3 Account to Discord Account')
+async def Archstones_privateserver(ctx, PSN_NAME):
+    if ctx.guild.name != GUILD:
+        return
+    if ctx.guild.name == GUILD:
+        #-- Check if account exist
+        timenow = datetime.datetime.now()
+        DISCORD_NAME = ctx.message.author
+
+        row = conn.execute("select count(*) from linkedaccounts where DISCORD_NAME = ?", (str(DISCORD_NAME),)).fetchone()
+        print("Value = %s %s %s %s" % (row, DISCORD_NAME, PSN_NAME, timenow))
+        if row[0] == 0:
+            conn.execute("insert into linkedaccounts(DISCORD_NAME, PSN_NAME, DATE_TIME) VALUES (?,?,?)", (str(DISCORD_NAME),str(PSN_NAME),str(timenow)))
+            conn.commit()
+            print("Linked Account %s to %s" % (DISCORD_NAME,PSN_NAME))
+
+
+            await ctx.send('Linked Account Success!', delete_after=30)
+            await ctx.message.delete()
+
+        elif row[0] >= 1:
+            await ctx.send('Account Already Linked!', delete_after=30)
+            await ctx.message.delete()
+            return
 
 #---- Admin User Commands
 @bot.command(name='editrr', help='Edit Current Role Reaction Message | Example Use !editrr channelID messageID "INSERT TITLE HERE" "INTERE CONTENT HERE" HexColorValue')
