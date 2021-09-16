@@ -736,11 +736,12 @@ async def personalstats(ctx, platform, discord_name):
             grade_d = stats[5]
             numsessions = stats[6]
             messageratings = stats[7]
-            gameversion = stats[8]
-            psndeaths = stats[9]
-            enable_manual_tendency = stats[10]
-            desired_tendency = stats[11]
-            global_tendency = stats[12]
+            playerlevel = stats[8]
+            gameversion = stats[9]
+            psndeaths = stats[10]
+            enable_manual_tendency = stats[11]
+            desired_tendency = stats[12]
+            global_tendency = stats[13]
 
             if enable_manual_tendency == 1:
                 enable_manual_tendency = "True"
@@ -774,11 +775,12 @@ async def personalstats(ctx, platform, discord_name):
             grade_d = stats[5]
             numsessions = stats[6]
             messageratings = stats[7]
-            gameversion = stats[8]
-            psndeaths = stats[9]
-            enable_manual_tendency = stats[10]
-            desired_tendency = stats[11]
-            global_tendency = stats[12]
+            playerlevel = stats[8]
+            gameversion = stats[9]
+            psndeaths = stats[10]
+            enable_manual_tendency = stats[11]
+            desired_tendency = stats[12]
+            global_tendency = stats[13]
 
             if enable_manual_tendency == 1:
                 enable_manual_tendency = "True"
