@@ -691,13 +691,14 @@ async def unlink(ctx, platform, discord_name):
 @inter_client.slash_command(
     description="Get Personal Server Stats",
     options=[
-        Option("platform", "Enter Platform | RPCS3 or PS3", OptionType.STRING, required=True),
-        Option("discord_name", "@ User", OptionType.USER, required=True)
+        Option("platform", "Enter Platform | RPCS3 or PS3", OptionType.STRING, required=True)
     ])
-async def personalstats(ctx, platform, discord_name):
+async def personalstats(ctx, platform):
     if ctx.guild.name != GUILD:
         return
     if ctx.guild.name == GUILD:
+        discord_name = ctx.author
+
         if "@" in str(discord_name):
             discord_name = bot.fetch_member(discord_name).name
 
